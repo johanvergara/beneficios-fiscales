@@ -10,13 +10,6 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-      "budgets": [
-        {
-          "type": "initial",
-          "maximumWarning": "1mb",
-          "maximumError": "2mb"
-        }
-      ],
         "build": {
           "builder": "@angular/build:application",
           "options": {
@@ -41,13 +34,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "outputHashing": "all"
