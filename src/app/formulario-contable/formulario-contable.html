@@ -1,0 +1,146 @@
+<div class="form-container">
+  <img src="assets/logo.jpg" alt="Logo del Proyecto" class="app-logo">
+
+  <div class="progreso-container">
+    <label class="progreso-label">Paso {{ pasoActual }} de {{ totalPasos }}</label>
+    <mat-progress-bar mode="determinate" [value]="progreso"></mat-progress-bar>
+  </div>
+
+  <!-- Bloque 1: Formulario inicial -->
+  <div *ngIf="!mostrarSiguienteFormulario">
+    <h1>Como saber a que beneficios fiscales puedes acceder en tu declaracion de renta</h1>
+
+    <div>
+      <label class="form-title">¿Cuál fue el valor de tu patrimonio bruto al finalizar el año; incluyendo tu cuenta de ahorros, tu carro, moto, casa, finca, inversiones y ahorro?</label>
+      <mat-form-field appearance="outline" class="custom-mat-form-field">
+        <input matInput type="number" placeholder="Ej: 220000000" [(ngModel)]="campo1" (ngModelChange)="verificarEstadoFormulario()">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+      <div *ngIf="alertaCampo1" class="alerta-declaracion">{{ alertaCampo1 }}</div>
+    </div>
+      
+    <div>
+      <label class="form-title">¿Cuál fue el valor de los ingresos que recibiste durante el año entre tu sueldo, primas, contratos, ventas, lo de tu negocio o cualquier ingreso extra?</label>
+      <mat-form-field appearance="outline" class="custom-mat-form-field">
+        <input matInput type="number" placeholder="Ej: 70000000" [(ngModel)]="campo2" (ngModelChange)="verificarEstadoFormulario()">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+      <div *ngIf="alertaCampo2" class="alerta-declaracion">{{ alertaCampo2 }}</div>
+    </div>
+  
+    <div>
+      <label class="form-title">¿Cuál fue el valor de las compras y gastos en el año, incluyendo mercado, servicios, viajes, salidas, compras, talleres o cursos; debes de considerar todas tus compras como vivienda o vehivulos?</label>
+      <mat-form-field appearance="outline" class="custom-mat-form-field">
+        <input matInput type="number" placeholder="Ej: 70000000" [(ngModel)]="campo3" (ngModelChange)="verificarEstadoFormulario()">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+      <div *ngIf="alertaCampo3" class="alerta-declaracion">{{ alertaCampo3 }}</div>
+    </div>
+  
+  
+    <div>
+      <label class="form-title">¿Cuál fue el valor del consumo mediante tarjetas de crédito incluyendo pagos a otras deudas?</label>
+      <mat-form-field appearance="outline" class="custom-mat-form-field">
+        <input matInput type="number" placeholder="Ej: 70000000" [(ngModel)]="campo4" (ngModelChange)="verificarEstadoFormulario()">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+      <div *ngIf="alertaCampo4" class="alerta-declaracion">{{ alertaCampo4 }}</div>
+    </div>
+  
+    
+    <div class="radio-group-container">
+      <label id="radio-group-label" class="radio-group-label">¿Eres responsable de IVA?</label>
+      <mat-radio-group aria-labelledby="radio-group-label" class="radio-group" [(ngModel)]="opcionSiNo" (ngModelChange)="verificarEstadoFormulario()">
+        <mat-radio-button value="si" class="radio-button">Sí</mat-radio-button>
+        <mat-radio-button value="no" class="radio-button">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  
+    <button mat-raised-button color="primary" (click)="calcularBeneficios()" [disabled]="!formValido">Calcular</button>
+  
+    <div *ngIf="mensajeDeclaracion" class="resultado-container">
+      <h2>Resultado:</h2>
+      <p class="resultado-titulo">{{ mensajeDeclaracion }}</p>
+      <ul *ngIf="razonesParaDeclarar.length > 0" class="lista-razones">
+        <li *ngFor="let razon of razonesParaDeclarar">
+          {{ razon }}
+        </li>
+      </ul>
+      <button *ngIf="debeDeclarar" mat-flat-button color="accent" class="continuar-button" (click)="mostrarSiguientePaso()">
+        Continuar para ver beneficios
+      </button>
+    </div>
+  </div>
+
+  <!-- Bloque 2: Siguiente pregunta -->
+  <div *ngIf="mostrarSiguienteFormulario" class="siguiente-formulario">
+    <div *ngIf="!mostrarBloque3 && !mensajeBloque2">
+      <h2>¿La totalidad o la mayor parte de tus ingresos proviene de una relacion laboral (salarios) o de la prestacion de servicios mendiante honorarios?</h2>
+      <mat-radio-group aria-labelledby="radio-group-label" class="radio-group" [(ngModel)]="respuestaBloque2" (ngModelChange)="evaluarRespuestaBloque2()">
+        <mat-radio-button value="si" class="radio-button">Sí</mat-radio-button>
+        <mat-radio-button value="no" class="radio-button">No</mat-radio-button>
+      </mat-radio-group>
+      <div class="botones-navegacion">
+        <button mat-raised-button color="primary" (click)="regresarABloque1()">Regresar</button>
+      </div>
+    </div>
+
+    <!-- Mensaje si la respuesta es NO -->
+    <div *ngIf="mensajeBloque2" class="resultado-container">
+      <h2>Resultado:</h2>
+      <p>{{ mensajeBloque2 }}</p>
+      <div class="botones-navegacion">
+        <button mat-raised-button color="primary" (click)="reiniciarProceso()">Terminar Proceso</button>
+      </div>
+    </div>
+
+    <!-- Bloque 3: 8 preguntas si la respuesta es SI -->
+    <div *ngIf="mostrarBloque3 && !mostrarResumenBloque3">
+      <h2>Responde las siguientes preguntas para identificar tus beneficios:</h2>
+
+      <!-- Preguntas generadas dinámicamente -->
+      <div *ngFor="let item of preguntasBeneficios" class="pregunta-bloque3">
+        <label class="form-title">{{ item.pregunta }}</label>
+        <mat-icon class="help-icon" [matTooltip]="item.tooltip" matTooltipPosition="above">help_outline</mat-icon>
+        <mat-radio-group class="radio-group" [(ngModel)]="respuestasBloque3[item.id]">
+          <mat-radio-button value="si">Sí</mat-radio-button>
+          <mat-radio-button value="no">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="botones-navegacion">
+        <button mat-raised-button color="primary" (click)="regresarAPreguntaBloque2()">Regresar</button>
+        <button mat-raised-button color="primary" (click)="calcularBeneficiosBloque3()" [disabled]="!bloque3Valido">
+          Calcular Beneficios
+        </button>
+      </div>
+    </div>
+
+    <!-- Bloque 3: Resumen de beneficios -->
+    <div *ngIf="mostrarResumenBloque3" class="resultado-container">
+      <div id="resumen-beneficios-pdf">
+        <h2>Resumen de Beneficios Fiscales Aplicables</h2>
+        <p *ngIf="beneficiosAplicables.length === 0">
+          Según tus respuestas, no has seleccionado opciones que generen beneficios fiscales directos de esta lista.
+        </p>
+
+        <div *ngFor="let beneficio of beneficiosAplicables" class="beneficio-item">
+          <h3>{{ beneficio.titulo }}</h3>
+          <p class="tooltip-text">{{ beneficio.tooltip }}</p>
+        </div>
+      </div>
+
+      <div class="botones-navegacion">
+        <!-- <button mat-raised-button color="primary" (click)="regresarAPreguntasBloque3()">Regresar</button> -->
+        <button mat-raised-button color="primary" (click)="reiniciarProceso()">Volver al Inicio</button>
+        <button mat-flat-button color="accent" class="continuar-button" (click)="generarPDF()" [disabled]="beneficiosAplicables.length === 0">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Generar PDF
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

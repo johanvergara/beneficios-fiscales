@@ -1,1 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* ==========================================================================
+   Botones Globales Modernos
+   ========================================================================== */
+
+/* Estilos base para todos los botones del formulario */
+.form-container .mat-mdc-button-base {
+  border-radius: 50px !important;
+  padding: 0 24px !important;
+  height: 44px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s ease, transform 0.15s ease-out, box-shadow 0.2s ease-out !important;
+  will-change: transform, box-shadow; /* Optimización para animaciones */
+}
+
+/* --- Botón Primario (Calcular) --- */
+.form-container .mat-mdc-raised-button.mat-primary {
+  background-color: #C2987C !important;
+  color: white !important;
+  box-shadow: 0 4px 14px 0 rgba(233, 171, 121, 0.39);
+}
+
+.form-container .mat-mdc-raised-button.mat-primary:hover:not([disabled]) {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 18px 0 rgba(233, 171, 121, 0.39);
+}
+
+.form-container .mat-mdc-raised-button.mat-primary:active:not([disabled]) {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 8px 0 rgba(233, 171, 121, 0.39);
+}
+
+/* --- Botón Secundario (Continuar) --- */
+.form-container .continuar-button {
+  background-color: #C2987C !important;
+  color: white !important;
+  box-shadow: 0 4px 14px 0 rgba(233, 171, 121, 0.39);
+}
+
+.form-container .continuar-button:hover:not([disabled]) {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 18px 0 rgba(233, 171, 121, 0.39);
+}
+
+.form-container .continuar-button:active:not([disabled]) {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 8px 0 rgba(233, 171, 121, 0.39);
+}
+
+/* --- Botón de Borde (Regresar) --- */
+.form-container .mat-mdc-stroked-button {
+  border-color: #C2987C !important;
+  color: #C2987C !important;
+  box-shadow: none;
+}
+
+.form-container .mat-mdc-stroked-button:hover:not([disabled]) {
+  background-color: rgba(194, 152, 124, 0.08) !important;
+  transform: translateY(-2px);
+}
+
+/* --- Estilo para la Barra de Progreso --- */
+.form-container .mat-mdc-progress-bar .mdc-linear-progress__bar-inner {
+  border-color: #C2987C !important;
+}
