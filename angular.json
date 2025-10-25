@@ -10,6 +10,13 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+      "budgets": [
+        {
+          "type": "initial",
+          "maximumWarning": "1mb",
+          "maximumError": "2mb"
+        }
+      ],
         "build": {
           "builder": "@angular/build:application",
           "options": {
