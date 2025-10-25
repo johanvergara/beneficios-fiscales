@@ -9,7 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import jsPDF, { GState } from 'jspdf';
+import jsPDF from 'jspdf';
+import { jsPDF as PDF } from 'jspdf'
 
 
 @Component({
